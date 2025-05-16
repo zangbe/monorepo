@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "libs/*"
+  ],
+  "scripts": {
+    "boot": "npm install && npm run prisma:generate",
+    "prisma:generate": "npm --workspace=packages/auth exec prisma generate && npm --workspace=packages/event exec prisma generate",
+    "start": "docker-compose up -d --build",
+    "clean": "docker-compose down --volumes --remove-orphans"
+  }
+}

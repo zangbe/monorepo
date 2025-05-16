@@ -1,0 +1,36 @@
+// 1) Client를 생성할 generator 블록
+generator client {
+  provider = "prisma-client-js"
+}  
+
+// 2) 실제 DB 연결정보를 담는 datasource 블록
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// model Event {
+//   id        String   @id @map("_id") @default(auto()) @db.ObjectId
+//   name      String
+//   condition String
+//   startAt   DateTime
+//   endAt     DateTime
+//   isActive  Boolean  @default(true)
+//   rewards   Reward[]
+//   requests  RewardRequest[]
+// }
+
+// model Reward {
+//   id       String @id @map("_id") @default(auto()) @db.ObjectId
+//   eventId  String @db.ObjectId
+//   type     String
+//   quantity Int
+// }
+
+// model RewardRequest {
+//   id        String   @id @map("_id") @default(auto()) @db.ObjectId
+//   userId    String   @db.ObjectId
+//   eventId   String   @db.ObjectId
+//   status    String   @default("PENDING")
+//   createdAt DateTime @default(now())
+// }

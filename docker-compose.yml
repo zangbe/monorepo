@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo:latest
+    volumes: [ mongo-data:/data/db ]
+    ports: [ '27017:27017' ]
+
+  auth:
+    build:
+      context: .
+      dockerfile: packages/auth/Dockerfile
+      target: builder
+    image: monorepo/auth:latest
+    environment:
+      DATABASE_URL: mongodb://mongo:27017/mydb
+      JWT_SECRET: your_jwt_secret
+    ports: [ '3001:3000' ]
+    depends_on: [ mongo ]
+
+  event:
+    build:
+      context: .
+      dockerfile: packages/event/Dockerfile
+      target: builder
+    image: monorepo/event:latest
+    environment:
+      DATABASE_URL: mongodb://mongo:27017/mydb
+    ports: [ '3002:3000' ]
+    depends_on: [ mongo ]
+
+  gateway:
+    build:
+      context: .
+      dockerfile: packages/gateway/Dockerfile
+      target: builder
+    image: monorepo/gateway:latest
+    environment:
+      AUTH_URL: http://auth:3000
+      EVENT_URL: http://event:3000
+      JWT_SECRET: your_jwt_secret
+    ports: [ '3000:3000' ]
+    depends_on: [ auth, event ]
+
+volumes:
+  mongo-data:

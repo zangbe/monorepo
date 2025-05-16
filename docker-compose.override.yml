@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  auth:
+    volumes:
+      - ./packages/auth:/app:delegated
+      - auth_node_modules:/app/node_modules
+    command: npm run start:dev
+
+  event:
+    volumes:
+      - ./packages/event:/app:delegated
+      - event_node_modules:/app/node_modules
+    command: npm run start:dev
+
+  gateway:
+    volumes:
+      - ./packages/gateway:/app:delegated
+      - gateway_node_modules:/app/node_modules
+    command: npm run start:dev
+
+volumes:
+  auth_node_modules:
+  event_node_modules:
+  gateway_node_modules:

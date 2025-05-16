@@ -1,0 +1,19 @@
+// 1) Client를 생성할 generator 블록
+generator client {
+  provider = "prisma-client-js"
+}  
+
+// 2) 실제 DB 연결정보를 담는 datasource 블록
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// enum Role { USER OPERATOR AUDITOR ADMIN }
+
+// model User {
+//   id       String @id @map("_id") @default(auto()) @db.ObjectId
+//   email    String @unique
+//   password String
+//   role     Role   @default(USER)
+// }
