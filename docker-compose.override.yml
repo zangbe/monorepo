@@ -3,6 +3,7 @@ services:
   auth:
     volumes:
       - ./packages/auth:/app:delegated
+      - ./libs:/app/libs:delegated
       - auth_node_modules:/app/node_modules
     command: npm run start:dev
 

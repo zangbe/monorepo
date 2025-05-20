@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": { "monorepo-libs": ["libs/src"] },
     "target": "ES2020",
     "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "composite": true,
-    "experimentalDecorators": true,       // 데코레이터 활성화
-    "emitDecoratorMetadata": true,        // 런타임 메타데이터 생성
-    "skipDefaultLibCheck": true,
-  }
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipDefaultLibCheck": true
+  },
+  "include": ["libs/**/*", "packages/**/*"]
 }

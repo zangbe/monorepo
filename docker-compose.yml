@@ -2,6 +2,7 @@ version: '3.8'
 services:
   mongo:
     image: mongo:latest
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
     volumes: [ mongo-data:/data/db ]
     ports: [ '27017:27017' ]
 
@@ -9,10 +10,10 @@ services:
     build:
       context: .
       dockerfile: packages/auth/Dockerfile
-      target: builder
+      # target: builder 
     image: monorepo/auth:latest
     environment:
-      DATABASE_URL: mongodb://mongo:27017/mydb
+      DATABASE_URL: mongodb://mongo:27017/mydb?replicaSet=rs0&retryWrites=true&w=majority
       JWT_SECRET: your_jwt_secret
     ports: [ '3001:3000' ]
     depends_on: [ mongo ]
@@ -21,10 +22,9 @@ services:
     build:
       context: .
       dockerfile: packages/event/Dockerfile
-      target: builder
     image: monorepo/event:latest
     environment:
-      DATABASE_URL: mongodb://mongo:27017/mydb
+      DATABASE_URL: mongodb://mongo:27017/mydb?replicaSet=rs0&retryWrites=true&w=majority
     ports: [ '3002:3000' ]
     depends_on: [ mongo ]
 
@@ -32,7 +32,6 @@ services:
     build:
       context: .
       dockerfile: packages/gateway/Dockerfile
-      target: builder
     image: monorepo/gateway:latest
     environment:
       AUTH_URL: http://auth:3000

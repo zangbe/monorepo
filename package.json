@@ -2,12 +2,21 @@
   "private": true,
   "workspaces": [
     "packages/*",
-    "libs/*"
+    "libs"
   ],
   "scripts": {
-    "boot": "npm install && npm run prisma:generate",
-    "prisma:generate": "npm --workspace=packages/auth exec prisma generate && npm --workspace=packages/event exec prisma generate",
-    "start": "docker-compose up -d --build",
+    "build:libs": "npm --workspace=libs install && npm --workspace=libs run build",
+    "prisma:generate": "npm run prisma:generate:auth && npm run prisma:generate:event",
+    "prisma:generate:auth": "npm --workspace=packages/auth exec prisma generate",
+    "prisma:generate:event": "npm --workspace=packages/event exec prisma generate",
+    "prisma:push": "npm run prisma:push:auth && npm run prisma:push:event",
+    "prisma:push:auth": "npm --workspace=packages/auth exec prisma db push",
+    "prisma:push:event": "npm --workspace=packages/event exec prisma db push",
+    "build:auth": "docker-compose build auth && docker-compose up -d auth",
+    "build:event": "docker-compose build event && docker-compose up -d event",
+    "build:gateway": "docker-compose build gateway && docker-compose up -d gateway",
+    "build:all": "docker-compose build && docker-compose up -d",
+    "setup": "npm install && npm run build:libs && npm run prisma:generate",
     "clean": "docker-compose down --volumes --remove-orphans"
   }
 }

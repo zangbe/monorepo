@@ -6,31 +6,31 @@ generator client {
 // 2) 실제 DB 연결정보를 담는 datasource 블록
 datasource db {
   provider = "mongodb"
-  url      = env("DATABASE_URL")
+  url      = "mongodb://mongo:27017/mydb?replicaSet=rs0&retryWrites=true&w=majority"
 }
 
-// model Event {
-//   id        String   @id @map("_id") @default(auto()) @db.ObjectId
-//   name      String
-//   condition String
-//   startAt   DateTime
-//   endAt     DateTime
-//   isActive  Boolean  @default(true)
-//   rewards   Reward[]
-//   requests  RewardRequest[]
-// }
+// Uncommented and extended Event model
+model Event {
+  id             String   @id @map("_id") @default(auto()) @db.ObjectId
+  name           String
+  conditionType  String
+  conditionValue Int
+  startAt        DateTime
+  endAt          DateTime
+  isActive       Boolean  @default(true)
+}
 
-// model Reward {
-//   id       String @id @map("_id") @default(auto()) @db.ObjectId
-//   eventId  String @db.ObjectId
-//   type     String
-//   quantity Int
-// }
+model Reward {
+  id       String @id @map("_id") @default(auto()) @db.ObjectId
+  eventId  String @db.ObjectId
+  type     String
+  quantity Int
+}
 
-// model RewardRequest {
-//   id        String   @id @map("_id") @default(auto()) @db.ObjectId
-//   userId    String   @db.ObjectId
-//   eventId   String   @db.ObjectId
-//   status    String   @default("PENDING")
-//   createdAt DateTime @default(now())
-// }
+model RewardRequest {
+  id        String   @id @map("_id") @default(auto()) @db.ObjectId
+  userId    String   @db.ObjectId
+  eventId   String   @db.ObjectId
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now())
+}

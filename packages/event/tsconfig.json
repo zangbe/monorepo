@@ -1,11 +1,14 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src",
-    "experimentalDecorators": true,       // 데코레이터 활성화
-    "emitDecoratorMetadata": true,        // 런타임 메타데이터 생성
+    "outDir": "./dist",
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "incremental": true
   },
-  "include": ["src"],
+  "include": ["src/**/*", "prisma/**/*"],
   "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
 }

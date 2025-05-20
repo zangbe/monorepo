@@ -1,36 +1,21 @@
-FROM node:18-alpine AS builder
+FROM node:18-alpine
 WORKDIR /app
 
-# Copy root package files
-COPY package.json package-lock.json ./
-COPY tsconfig.base.json ./
+RUN npm install -g @nestjs/cli
+RUN npm install -g typescript
 
-# Copy workspace packages
-COPY packages/gateway ./packages/gateway
+COPY package.json package-lock.json tsconfig.base.json ./
 COPY libs ./libs
+COPY packages/gateway ./packages/gateway
 
-# Install dependencies
 RUN npm ci
 
-# Build the application
-RUN npm run build --workspace=packages/gateway
+WORKDIR /app/libs
+RUN npm ci
+RUN npm run build
 
-FROM node:18-alpine AS runner
 WORKDIR /app
-
-# Copy root package files
-COPY package.json package-lock.json ./
-COPY tsconfig.base.json ./
-
-# Copy workspace packages
-COPY packages/gateway ./packages/gateway
-COPY libs ./libs
-
-# Install production dependencies
-RUN npm ci --omit=dev
-
-# Copy built application
-COPY --from=builder /app/packages/gateway/dist ./dist
-
-EXPOSE 3000
-CMD ["node","dist/main.js"]
+RUN npm --workspace=packages/gateway exec prisma generate
+WORKDIR /app/packages/gateway
+RUN npm ci
+RUN nest build 

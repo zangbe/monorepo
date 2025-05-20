@@ -2,6 +2,23 @@
   "name": "monorepo-libs",
   "version": "1.0.0",
   "main": "dist/index.js",
-  "scripts": { "build": "tsc -b" },
-  "devDependencies": { "typescript": "^5.8.0" }
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": { 
+    "build": "tsc -p tsconfig.json",
+    "prebuild": "rm -rf dist"
+  },
+  "dependencies": {
+    "@nestjs/core": "^11.1.1",
+    "@nestjs/jwt": "^11.0.0",
+    "@nestjs/common": "^11.1.1",
+    "@nestjs/passport": "^11.0.5",
+    "passport-jwt": "^4.0.1",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": { "typescript": "^5.8.0", "@types/passport-jwt": "^4.0.1",
+  "@types/node": "^20.0.0",
+  "@types/passport-local": "^1.0.34",
+  "@types/bcrypt": "^5.0.0",
+  "@types/passport": "^1.0.10" }
 }

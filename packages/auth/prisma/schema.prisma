@@ -6,14 +6,20 @@ generator client {
 // 2) 실제 DB 연결정보를 담는 datasource 블록
 datasource db {
   provider = "mongodb"
-  url      = env("DATABASE_URL")
+  url      = "mongodb://localhost:27017/mydb?replicaSet=rs0&retryWrites=true&w=majority"
 }
 
-// enum Role { USER OPERATOR AUDITOR ADMIN }
+// Define roles for users
+enum Role {
+  USER
+  OPERATOR
+  AUDITOR
+  ADMIN
+}
 
-// model User {
-//   id       String @id @map("_id") @default(auto()) @db.ObjectId
-//   email    String @unique
-//   password String
-//   role     Role   @default(USER)
-// }
+model User {
+  id       String @id @map("_id") @default(auto()) @db.ObjectId
+  email    String @unique
+  password String
+  role     Role   @default(USER)
+}
